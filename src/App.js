@@ -1,9 +1,9 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import TodoList from "./components/TodoList";
 
 function App() {
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" style={{backgroundColor: 'beige', minHeight: '100vh', padding: '20px'}}>
       <Box sx={{ my: 4 }}>
         <TodoList />
       </Box>

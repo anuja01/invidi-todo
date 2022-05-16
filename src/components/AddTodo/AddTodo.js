@@ -6,14 +6,13 @@ const AddTodo = ({ createTodo }) => {
   const [todo, setTodo] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(todo);
     createTodo(todo);
     setTodo("");
   };
   return (
     <form onSubmit={handleSubmit} className="AddTodoForm">
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <FormControl fullWidth>
             <TextField
               id="text-enterTodo"

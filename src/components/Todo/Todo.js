@@ -37,7 +37,7 @@ const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
               onChange={(e) => setEditTodo(e.target.value)}
               style={{ width: "75%" }}
             />
-            <Button type="submit" variant="contained" size="medium">
+            <Button type="submit" variant="contained">
               Save Todo
             </Button>
           </Grid>

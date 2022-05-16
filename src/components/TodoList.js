@@ -1,15 +1,20 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Todo from "./Todo/Todo";
 import AddTodo from "./AddTodo/AddTodo";
 import { useSelector, useDispatch } from "react-redux";
 import { completeTodo, addTodo, removeTodo, updateTodo } from "../redux/action";
-import "./todolist.css";
-import { Divider, Pagination, Typography } from "@mui/material";
+import { Pagination, TextField, Typography } from "@mui/material";
 import usePagination from "../utility/pagination";
+import { filteredList } from "../utility/util";
+import { PER_PAGE } from "../utility/constants";
+
+import "./todolist.css";
+import SearchInput from "./Search/Search";
 
 const TodoList = () => {
   const state = useSelector((state) => ({ ...state.todos }));
   const dispatch = useDispatch();
+
   const createTodo = (newTodo) => {
     dispatch(addTodo(newTodo));
   };
@@ -17,31 +22,36 @@ const TodoList = () => {
     dispatch(updateTodo({ id, updatedTodo }));
   };
 
-  let [page, setPage] = useState(1);
-  const PER_PAGE = 3;
+  // handle search input
+  const [inputText, setInputText] = useState("");
+  let searchInputHandler = (e) => {
+    //convert input text to lower case
+    var lowerCase = e.target.value.toLowerCase();
+    setInputText(lowerCase);
+  };
+  const filteredData = filteredList(state.todos, inputText);
 
-  const count = Math.ceil(state.todos.length / PER_PAGE);
-  const _DATA = usePagination(state.todos, PER_PAGE);
-  const handleChange = (e, p) => {
+  // handle pagination
+  let [page, setPage] = useState(1);
+
+  const count = Math.ceil(filteredData.length / PER_PAGE);
+  const _DATA = usePagination(filteredData, PER_PAGE);
+  const paginationHandler = (e, p) => {
     setPage(p);
     _DATA.jump(p);
   };
+
   return (
     <div className="TodoListContainer">
       <Typography variant="h4" gutterBottom component="div">
         Todo List
       </Typography>
+
+      {/* search */}
+      <SearchInput searchInputHandler={searchInputHandler} />
+
       <AddTodo createTodo={createTodo} />
 
-      <Pagination
-        count={count}
-        size="large"
-        page={page}
-        variant="outlined"
-        shape="rounded"
-        onChange={handleChange}
-      />
-      
       {_DATA &&
         _DATA.currentData().map((todo) => {
           return (
@@ -58,6 +68,14 @@ const TodoList = () => {
             </>
           );
         })}
+      <Pagination
+        count={count}
+        size="large"
+        page={page}
+        variant="outlined"
+        shape="rounded"
+        onChange={paginationHandler}
+      />
     </div>
   );
 };
