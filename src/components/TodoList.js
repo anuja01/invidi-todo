@@ -47,11 +47,11 @@ const TodoList = () => {
         Todo List
       </Typography>
 
-      {/* search */}
       <SearchInput searchInputHandler={searchInputHandler} />
 
       <AddTodo createTodo={createTodo} />
 
+      {/* iterate through filtered results to show todo list */}
       {_DATA &&
         _DATA.currentData().map((todo) => {
           return (

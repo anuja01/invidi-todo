@@ -22,6 +22,7 @@ const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
       container
       className="Wrapper"
     >
+      {/* if your in trying to edit a todo, then show the input box with value pre populated */}
       {isEdit ? (
         <form onSubmit={handleUpdate} style={{ width: "100%" }}>
           <Grid
