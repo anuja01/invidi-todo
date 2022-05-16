@@ -1,0 +1,13 @@
+li:hover {
+  color: cornflowerblue;
+  font-weight: bold;
+
+}
+
+.Wrapper {
+  margin-bottom: 16px;
+  margin-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid;
+  border-color: gainsboro;
+}
