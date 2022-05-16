@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Pagination, Typography } from "@mui/material";
+
 import Todo from "../components/Todo/Todo";
 import AddTodo from "../components/AddTodo/AddTodo";
-import { useSelector, useDispatch } from "react-redux";
-import { completeTodo, addTodo, removeTodo, updateTodo } from "../redux/action";
-import { Pagination, TextField, Typography } from "@mui/material";
+import SearchInput from "../components/Search/Search";
+
 import usePagination from "../utility/pagination";
 import { filteredList } from "../utility/util";
 import { PER_PAGE } from "../utility/constants";
-
+import { completeTodo, addTodo, removeTodo, updateTodo } from "../redux/action";
 import "./todolist.css";
-import SearchInput from "../components/Search/Search";
 
 const TodoList = () => {
   const state = useSelector((state) => ({ ...state.todos }));
@@ -52,22 +53,26 @@ const TodoList = () => {
       <AddTodo createTodo={createTodo} />
 
       {/* iterate through filtered results to show todo list */}
-      {_DATA &&
+      {console.log(_DATA)}
+      {_DATA.currentData().length ? (
         _DATA.currentData().map((todo) => {
           return (
-            <>
-              <Todo
-                key={todo.id}
-                id={todo.id}
-                todo={todo.todo}
-                completed={todo.completed}
-                toggleTodo={() => dispatch(completeTodo(todo))}
-                removeTodo={() => dispatch(removeTodo(todo))}
-                updateTodo={udpateTodoItem}
-              />
-            </>
+            <Todo
+              key={todo.id}
+              id={todo.id}
+              todo={todo.todo}
+              completed={todo.completed}
+              toggleTodo={() => dispatch(completeTodo(todo))}
+              removeTodo={() => dispatch(removeTodo(todo))}
+              updateTodo={udpateTodoItem}
+            />
           );
-        })}
+        })
+      ) : (
+        <Typography variant="h5" gutterBottom component="div">
+          No Todo's found!
+        </Typography>
+      )}
       <Pagination
         count={count}
         size="large"

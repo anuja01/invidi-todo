@@ -7,7 +7,8 @@ const SearchInput = ({ searchInputHandler }) => {
       <Grid item xs={4}></Grid>
       <Grid item xs={4}>
         <TextField
-          id="outlined-basic"
+          id="searchInput"
+          inputProps={{ "data-testid": "textField-searchInput" }}
           variant="outlined"
           fullWidth
           label="Search your todo..."

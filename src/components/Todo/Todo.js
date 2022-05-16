@@ -1,13 +1,8 @@
-import {
-  Button,
-  Grid,
-  TextField,
-  Typography
-} from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import React, { useState } from "react";
-import './styles.css'
+import "./styles.css";
 
 const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -18,10 +13,7 @@ const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
     setIsEdit(false);
   };
   return (
-    <Grid
-      container
-      className="Wrapper"
-    >
+    <Grid container className="Wrapper">
       {/* if your in trying to edit a todo, then show the input box with value pre populated */}
       {isEdit ? (
         <form onSubmit={handleUpdate} style={{ width: "100%" }}>
@@ -46,14 +38,15 @@ const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
       ) : (
         <Grid item xs={8}>
           <Typography
-            variant="body2"
+            variant="h6"
             gutterBottom
             style={{ textDecoration: completed ? "line-through" : "none" }}
           >
-            <li style={{ listStyleType: "none", cursor: 'pointer' }} onClick={toggleTodo}>
-              <Typography variant="h6" gutterBottom component="div">
-                {todo}
-              </Typography>
+            <li
+              style={{ listStyleType: "none", cursor: "pointer" }}
+              onClick={toggleTodo}
+            >
+              {todo}
             </li>
           </Typography>
         </Grid>
