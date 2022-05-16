@@ -1,5 +1,5 @@
 import { Box, Container } from "@mui/material";
-import TodoList from "./components/TodoList";
+import TodoList from "./pages/TodoList";
 import './App.css'
 function App() {
   return (

@@ -1,6 +1,7 @@
 import * as types from "./actionTypes";
 import { v4 as uuidv4 } from "uuid";
 
+// initial mock state
 const initialState = {
   todos: [{ id: 1, todo: "Wake up", completed: false }]
 };

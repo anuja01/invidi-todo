@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Todo from "./Todo/Todo";
-import AddTodo from "./AddTodo/AddTodo";
+import Todo from "../components/Todo/Todo";
+import AddTodo from "../components/AddTodo/AddTodo";
 import { useSelector, useDispatch } from "react-redux";
 import { completeTodo, addTodo, removeTodo, updateTodo } from "../redux/action";
 import { Pagination, TextField, Typography } from "@mui/material";
@@ -9,7 +9,7 @@ import { filteredList } from "../utility/util";
 import { PER_PAGE } from "../utility/constants";
 
 import "./todolist.css";
-import SearchInput from "./Search/Search";
+import SearchInput from "../components/Search/Search";
 
 const TodoList = () => {
   const state = useSelector((state) => ({ ...state.todos }));
