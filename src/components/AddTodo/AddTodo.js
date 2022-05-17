@@ -6,8 +6,12 @@ const AddTodo = ({ createTodo }) => {
   const [todo, setTodo] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    createTodo(todo);
-    setTodo("");
+    if (todo === "") {
+      alert("Please enter your todo first");
+    } else {
+      createTodo(todo);
+      setTodo("");
+    }
   };
   return (
     <form onSubmit={handleSubmit} className="AddTodoForm">
