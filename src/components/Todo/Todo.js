@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import "./styles.css";
 
 const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
-  console.log('id: -----',id)
   const [isEdit, setIsEdit] = useState(false);
   const [editTodo, setEditTodo] = useState(todo);
   const handleUpdate = (e) => {
