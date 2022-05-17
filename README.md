@@ -24,3 +24,7 @@ Please make sure node version 15 or more is available.
 [Material UI](https://mui.com/material-ui/getting-started/) - React UI framework   
 [Redux](https://redux.js.org/) is used as state manager    
 [MockAPI.io](https://mockapi.io/) is used to mock the APIs   
+
+
+To resolve any issues with running testes, please use typeahead 0.6.5    
+`npm i -D --exact jest-watch-typeahead@0.6.5`
