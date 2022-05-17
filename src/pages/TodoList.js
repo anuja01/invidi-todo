@@ -15,7 +15,13 @@ import SearchInput from "../components/Search/Search";
 import usePagination from "../utility/pagination";
 import { filteredList } from "../utility/util";
 import { PER_PAGE } from "../utility/constants";
-import { completeTodo, addTodo, removeTodo, updateTodo } from "../redux/action";
+import {
+  completeTodo,
+  addTodo,
+  removeTodo,
+  updateTodo,
+  showError
+} from "../redux/action";
 import "./todolist.css";
 import { useEffect } from "react";
 import {
@@ -31,8 +37,9 @@ const TodoList = () => {
   const dispatch = useDispatch();
 
   const createTodo = async (newTodo) => {
-    await addNewTodo(dispatch, newTodo);
-    dispatch(addTodo(newTodo));
+    const todoResponse = await addNewTodo(dispatch, newTodo);
+    console.log('todo Response: ',todoResponse)
+    dispatch(addTodo(todoResponse));
   };
   const udpateTodoItem = async (id, updatedTodo) => {
     await updateTodoItem(dispatch, updatedTodo, id);
@@ -68,7 +75,7 @@ const TodoList = () => {
   return (
     <div className="TodoListContainer">
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff" }}
         open={state.showSpinner}
       >
         <CircularProgress color="inherit" />
@@ -81,10 +88,21 @@ const TodoList = () => {
 
       <AddTodo createTodo={createTodo} />
       {state.showError && (
-        <Alert severity="error">{`${state.errorDetails}, please try again`}</Alert>
+        <Alert
+          onClose={() => {
+            dispatch(
+              showError({
+                error: false,
+                status: "",
+                statusText: ""
+              })
+            );
+          }}
+          severity="error"
+        >{`${state.errorDetails}, please try again`}</Alert>
       )}
-      {/* iterate through filtered results to show todo list */}
 
+      {/* iterate through filtered results to show todo list */}
       {_DATA.currentData().length ? (
         _DATA.currentData().map((todo) => {
           return (
@@ -97,9 +115,12 @@ const TodoList = () => {
                 markCompleted(dispatch, !todo.completed, todo.id);
                 dispatch(completeTodo(todo));
               }}
-              removeTodo={() => {
-                deleteTodoItem(dispatch, todo.id);
-                dispatch(removeTodo(todo));
+              removeTodo={async () => {
+                const apiResponse = await deleteTodoItem(dispatch, todo.id);
+                // update application state only if API response is successful
+                if (!apiResponse.error) {
+                  dispatch(removeTodo(todo));
+                }
               }}
               updateTodo={udpateTodoItem}
             />

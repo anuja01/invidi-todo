@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import "./styles.css";
 
 const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
+  console.log('id: -----',id)
   const [isEdit, setIsEdit] = useState(false);
   const [editTodo, setEditTodo] = useState(todo);
   const handleUpdate = (e) => {
@@ -16,14 +17,11 @@ const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
     <Grid container className="Wrapper">
       {/* if your in trying to edit a todo, then show the input box with value pre populated */}
       {isEdit ? (
-        <form onSubmit={handleUpdate} style={{ width: "100%" }}>
-          <Grid
-            item
-            xs={8}
-            style={{ display: "flex", justifyContent: "space-between" }}
-          >
+        <form onSubmit={handleUpdate} className={"FullWidthForm"}>
+          <Grid item xs={8} className={"EditGrid"}>
             <TextField
               id="text-editTodo"
+              inputProps={{ "data-testid": "textField-editTodo" }}
               label="Edit Todo"
               variant="outlined"
               value={editTodo}
@@ -53,11 +51,7 @@ const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
       )}
 
       {!isEdit && (
-        <Grid
-          item
-          xs={4}
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
+        <Grid item xs={4} className={"EditGrid"}>
           <Button
             variant="outlined"
             onClick={() => setIsEdit(true)}

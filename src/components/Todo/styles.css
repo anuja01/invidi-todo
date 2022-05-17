@@ -11,3 +11,12 @@ li:hover {
   border-bottom: 1px solid;
   border-color: gainsboro;
 }
+
+.FullWidthForm {
+  width: 100%;
+}
+
+.EditGrid {
+  display: flex;
+  justify-content: space-between;
+}

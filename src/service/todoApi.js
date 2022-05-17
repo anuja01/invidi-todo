@@ -1,12 +1,12 @@
-import { loadAllTodos, showSpinner, showError, addTodo } from "../redux/action";
-// import {getTodoAPI, addNewTodoAPI} from './api'
-
+import { loadAllTodos, showSpinner, showError } from "../redux/action";
 import { URL } from "../utility/constants";
+import { handleApiError } from "../utility/util";
 
+// get todo list from API
 const getTodoListAPI = async (dispatch, method) => {
   try {
     const response = await fetch(URL, {
-      method: method // default, so we can ignore
+      method: method
     });
     if (!response.ok) {
       dispatch(
@@ -22,8 +22,7 @@ const getTodoListAPI = async (dispatch, method) => {
         statusText: response.statusText
       };
     }
-    const body = await response.json();
-    return body;
+    return await response.json();
   } catch (error) {
     console.log("error: ", error);
   }
@@ -40,6 +39,7 @@ export const getTodoList = async (dispatch) => {
   }
 };
 
+// add new todo
 const addNewTodoAPI = async (dispatch, method, requestParams, id) => {
   try {
     const response = await fetch(URL, {
@@ -51,11 +51,9 @@ const addNewTodoAPI = async (dispatch, method, requestParams, id) => {
       body: JSON.stringify({ todo: requestParams, completed: false })
     });
     if (!response.ok) {
-      dispatch(showError(true));
-      return [];
+      return handleApiError(dispatch, response);
     }
-    const body = await response.json();
-    return body;
+    return await response.json();
   } catch (error) {
     console.log("error: ", error);
   }
@@ -64,14 +62,15 @@ const addNewTodoAPI = async (dispatch, method, requestParams, id) => {
 export const addNewTodo = async (dispatch, todo) => {
   try {
     dispatch(showSpinner(true));
-    await addNewTodoAPI(dispatch, "POST", todo, null);
-
+    const addTodoResponse = await addNewTodoAPI(dispatch, "POST", todo, null);
     dispatch(showSpinner(false));
+    return addTodoResponse;
   } catch (error) {
     dispatch(showError(true));
   }
 };
 
+// update existing todo
 const updateTodoItemAPI = async (dispatch, method, requestParams, id) => {
   try {
     const response = await fetch(URL + id, {
@@ -83,11 +82,9 @@ const updateTodoItemAPI = async (dispatch, method, requestParams, id) => {
       body: JSON.stringify({ todo: requestParams })
     });
     if (!response.ok) {
-      dispatch(showError(true));
-      return [];
+      return handleApiError(dispatch, response);
     }
-    const body = await response.json();
-    return body;
+    return await response.json();
   } catch (error) {
     console.log("error: ", error);
   }
@@ -103,6 +100,7 @@ export const updateTodoItem = async (dispatch, todo, id) => {
   }
 };
 
+// mark todo as completed
 const markCompletedAPI = async (dispatch, method, requestParams, id) => {
   try {
     const response = await fetch(URL + id, {
@@ -114,11 +112,9 @@ const markCompletedAPI = async (dispatch, method, requestParams, id) => {
       body: JSON.stringify({ completed: requestParams })
     });
     if (!response.ok) {
-      dispatch(showError(true));
-      return [];
+      return handleApiError(dispatch, response);
     }
-    const body = await response.json();
-    return body;
+    return await response.json();
   } catch (error) {
     console.log("error: ", error);
   }
@@ -134,6 +130,7 @@ export const markCompleted = async (dispatch, isCompleted, id) => {
   }
 };
 
+// delete todo 
 const deleteTodoItemAPI = async (dispatch, method, id) => {
   try {
     const response = await fetch(URL + id, {
@@ -144,11 +141,9 @@ const deleteTodoItemAPI = async (dispatch, method, id) => {
       }
     });
     if (!response.ok) {
-      dispatch(showError(true));
-      return [];
+      return handleApiError(dispatch, response);
     }
-    const body = await response.json();
-    return body;
+    return await response.json();
   } catch (error) {
     console.log("error error: ", error);
   }
@@ -157,9 +152,12 @@ const deleteTodoItemAPI = async (dispatch, method, id) => {
 export const deleteTodoItem = async (dispatch, id) => {
   try {
     dispatch(showSpinner(true));
-    await deleteTodoItemAPI(dispatch, "DELETE", id);
+    const apiResponse = await deleteTodoItemAPI(dispatch, "DELETE", id);
     dispatch(showSpinner(false));
+    return apiResponse;
   } catch (error) {
     dispatch(showError(true));
   }
 };
+
+

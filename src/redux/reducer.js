@@ -1,5 +1,4 @@
 import * as types from "./actionTypes";
-import { v4 as uuidv4 } from "uuid";
 
 // initial mock state
 const initialState = {
@@ -16,28 +15,21 @@ const todoReducer = (state = initialState, action) => {
       };
 
     case types.ADD_TODO:
-      const newTodo = {
-        id: uuidv4(), // generate unique ID for a todo
-        todo: action.payload,
-        completed: false
-      };
-      const addedTodos = [...state.todos, newTodo];
+      const addedTodos = [...state.todos, action.payload];
       return {
         ...state,
         todos: addedTodos
       };
 
     case types.REMOVE_TODO:
-      // remove only from state, no API involvement
-      const filterTodo = state.todos.length && state.todos.filter(
-        (todo) => todo.id !== action.payload.id
-      );
+      const filterTodo =
+        state.todos.length &&
+        state.todos.filter((todo) => todo.id !== action.payload.id);
       return {
         ...state,
         todos: filterTodo
       };
     case types.UPDATE_TODO:
-      // update todo in state
       const updatedTodos = state.todos.map((todo) => {
         if (todo.id === action.payload.id) {
           return { ...todo, todo: action.payload.updatedTodo };
