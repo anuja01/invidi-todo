@@ -38,7 +38,6 @@ const TodoList = () => {
 
   const createTodo = async (newTodo) => {
     const todoResponse = await addNewTodo(dispatch, newTodo);
-    console.log('todo Response: ',todoResponse)
     dispatch(addTodo(todoResponse));
   };
   const udpateTodoItem = async (id, updatedTodo) => {
