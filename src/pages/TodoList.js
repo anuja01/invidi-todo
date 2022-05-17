@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Pagination, Typography } from "@mui/material";
+import {
+  Alert,
+  Backdrop,
+  CircularProgress,
+  Pagination,
+  Typography
+} from "@mui/material";
 
 import Todo from "../components/Todo/Todo";
 import AddTodo from "../components/AddTodo/AddTodo";
@@ -11,15 +17,25 @@ import { filteredList } from "../utility/util";
 import { PER_PAGE } from "../utility/constants";
 import { completeTodo, addTodo, removeTodo, updateTodo } from "../redux/action";
 import "./todolist.css";
+import { useEffect } from "react";
+import {
+  addNewTodo,
+  getTodoList,
+  updateTodoItem,
+  markCompleted,
+  deleteTodoItem
+} from "../service/todoApi";
 
 const TodoList = () => {
   const state = useSelector((state) => ({ ...state.todos }));
   const dispatch = useDispatch();
 
-  const createTodo = (newTodo) => {
+  const createTodo = async (newTodo) => {
+    await addNewTodo(dispatch, newTodo);
     dispatch(addTodo(newTodo));
   };
-  const udpateTodoItem = (id, updatedTodo) => {
+  const udpateTodoItem = async (id, updatedTodo) => {
+    await updateTodoItem(dispatch, updatedTodo, id);
     dispatch(updateTodo({ id, updatedTodo }));
   };
 
@@ -42,8 +58,21 @@ const TodoList = () => {
     _DATA.jump(p);
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      await getTodoList(dispatch);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="TodoListContainer">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={state.showSpinner}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Typography variant="h4" gutterBottom component="div">
         Todo List
       </Typography>
@@ -51,9 +80,11 @@ const TodoList = () => {
       <SearchInput searchInputHandler={searchInputHandler} />
 
       <AddTodo createTodo={createTodo} />
-
+      {state.showError && (
+        <Alert severity="error">{`${state.errorDetails}, please try again`}</Alert>
+      )}
       {/* iterate through filtered results to show todo list */}
-      {console.log(_DATA)}
+
       {_DATA.currentData().length ? (
         _DATA.currentData().map((todo) => {
           return (
@@ -62,8 +93,14 @@ const TodoList = () => {
               id={todo.id}
               todo={todo.todo}
               completed={todo.completed}
-              toggleTodo={() => dispatch(completeTodo(todo))}
-              removeTodo={() => dispatch(removeTodo(todo))}
+              toggleTodo={() => {
+                markCompleted(dispatch, !todo.completed, todo.id);
+                dispatch(completeTodo(todo));
+              }}
+              removeTodo={() => {
+                deleteTodoItem(dispatch, todo.id);
+                dispatch(removeTodo(todo));
+              }}
               updateTodo={udpateTodoItem}
             />
           );

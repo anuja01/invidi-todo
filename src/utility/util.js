@@ -5,7 +5,7 @@
  * @returns 
  */
 export const filteredList = (todos, inputText) => {
-  return todos.filter((el) => {
+  return todos.length && todos.filter((el) => {
     if (inputText === "") {
       return el;
     } else {

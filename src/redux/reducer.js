@@ -3,11 +3,18 @@ import { v4 as uuidv4 } from "uuid";
 
 // initial mock state
 const initialState = {
-  todos: [{ id: 1, todo: "Wake up", completed: false }]
+  todos: [],
+  showSpinner: false
 };
 
 const todoReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.ALL_TODOS:
+      return {
+        ...state,
+        todos: action.payload
+      };
+
     case types.ADD_TODO:
       const newTodo = {
         id: uuidv4(), // generate unique ID for a todo
@@ -22,7 +29,7 @@ const todoReducer = (state = initialState, action) => {
 
     case types.REMOVE_TODO:
       // remove only from state, no API involvement
-      const filterTodo = state.todos.filter(
+      const filterTodo = state.todos.length && state.todos.filter(
         (todo) => todo.id !== action.payload.id
       );
       return {
@@ -50,6 +57,17 @@ const todoReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: toggleTodo
+      };
+    case types.SHOW_SPINNER:
+      return {
+        ...state,
+        showSpinner: action.payload
+      };
+    case types.SHOW_ERROR:
+      return {
+        ...state,
+        showError: action.payload.error,
+        errorDetails: `${action.payload.status} ${action.payload.statusText}`
       };
     default:
       return state;
