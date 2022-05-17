@@ -48,7 +48,7 @@ const Todo = ({ toggleTodo, todo, completed, id, removeTodo, updateTodo }) => {
           </Typography>
         </Grid>
       )}
-
+      {/* hide edit/delete buttons in todo edit mode */}
       {!isEdit && (
         <Grid item xs={4} className={"EditGrid"}>
           <Button

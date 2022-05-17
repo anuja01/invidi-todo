@@ -69,7 +69,7 @@ const TodoList = () => {
       await getTodoList(dispatch);
     }
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="TodoListContainer">

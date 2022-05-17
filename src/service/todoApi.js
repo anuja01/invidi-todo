@@ -145,7 +145,7 @@ const deleteTodoItemAPI = async (dispatch, method, id) => {
     }
     return await response.json();
   } catch (error) {
-    console.log("error error: ", error);
+    console.log("error: ", error);
   }
 };
 

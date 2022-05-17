@@ -11,14 +11,14 @@ const todoReducer = (state = initialState, action) => {
     case types.ALL_TODOS:
       return {
         ...state,
-        todos: action.payload
+        todos: action.payload.reverse()
       };
 
     case types.ADD_TODO:
-      const addedTodos = [...state.todos, action.payload];
+      const addedTodos = [action.payload, ...state.todos ];
       return {
         ...state,
-        todos: addedTodos
+        todos: addedTodos,
       };
 
     case types.REMOVE_TODO:
